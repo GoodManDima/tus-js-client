@@ -3,75 +3,67 @@
   <head>
     <meta charset="UTF-8">
     <title>tus-js-client demo</title>
-    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
-    <link href="/demo/demo.css" rel="stylesheet" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="./demo.css" rel="stylesheet" media="screen" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="container">
-      <h1>tus-js-client demo</h1>
+      <h1>File uploader</h1>
 
-      <p>
-        For a prettier demo please go to the
-        <a href="http://tus.io/demo.html">tus.io</a> website.
-        This demo is just here to aid developers.
-      </p>
-
-      <div class="alert alert-warining hidden" id="support-alert">
-        <b>Warning!</b> Your browser does not seem to support the features necessary to run tus-js-client. The buttons below may work but probably will fail silently.
+      <div class="alert alert-warning" hidden role="alert" id="support-alert">
+        <h4 class="alert-heading">Warning!</h4>
+        <p>Your browser does not seem to support the features necessary to run tus-js-client. The buttons below may work but probably will fail silently.</p>
       </div>
 
       <br />
 
-      <table>
-        <tr>
-          <td>
-            <label for="endpoint">
-              Upload endpoint:
-            </label>
-          </td>
-          <td>
-            <input type="text" id="endpoint" name="endpoint" value="https://master.tus.io/files/">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="chunksize">
-              Chunk size (bytes):
-            </label>
-          </td>
-          <td>
-            <input type="number" id="chunksize" name="chunksize">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="resume">
-              Perform full upload:
-              <br />
-              <small>(even if we could resume)</small>
-            </label>
-          </td>
-          <td>
-            <input type="checkbox" id="resume">
-          </td>
-        </tr>
-      </table>
-
-      <br />
-
-      <input type="file">
+      <form>
+        <div class="form-group row">
+          <label for="endpoint" class="col-sm-2 col-form-label">Upload endpoint</label>
+          <div class="col-sm-6">
+            <input type="text" id="endpoint" class="form-control" name="endpoint" value="/files/">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="chunksize" class="col-sm-2 col-form-label">Chunk size (bytes)</label>
+          <div class="col-sm-6">
+            <input type="number" id="chunksize" class="form-control" name="chunksize">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2">Perform full upload</div>
+          <div class="col-sm-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" id="resume" class="form-check-input"> Check me out
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="file" class="col-sm-2 col-form-label">File</label>
+          <div class="col-sm-6">
+            <input type="file" name="file" class="form-control">
+          </div>
+        </div>
+      </form>
 
       <br />
       <br />
 
       <div class="row">
-        <div class="span8">
-          <div class="progress progress-striped progress-success">
-            <div class="bar" style="width: 0%;"></div>
+        <div class="col-sm-8">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
         </div>
-        <div class="span4">
-          <button class="btn btn-danger stop disabled" id="stop-btn"><i class="icon-white icon-stop"></i> abort upload</button>
+        <div class="col-sm-4">
+          <button class="btn btn-success resume" hidden id="resume-btn">RESUME</button>
+          <button class="btn btn-warning pause" hidden id="pause-btn">PAUSE</button>
+          <button class="btn btn-danger cancel" hidden id="cancel-btn">CANCEL</button>
         </div>
       </div>
 
@@ -79,6 +71,7 @@
       <h3>Uploads</h3>
       <p>
         Succesful uploads will be listed here. Try one!
+        <div id="uploaded"></div>
       </p>
 
     </div>
